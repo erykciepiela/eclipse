@@ -141,9 +141,11 @@ eclipsePlaces =
   , { place: "Warsaw", peakH: 18, peakM: 3, halfMin: 58.0, maxObs: 0.75, totalSec: 0.0 }
   , { place: "Bydgoszcz", peakH: 18, peakM: 4, halfMin: 59.0, maxObs: 0.81, totalSec: 0.0 }
   , { place: "Inowrocław", peakH: 18, peakM: 4, halfMin: 59.0, maxObs: 0.8, totalSec: 0.0 }
+  , { place: "Płock", peakH: 18, peakM: 4, halfMin: 59.0, maxObs: 0.78, totalSec: 0.0 }
   , { place: "Kraków", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.72, totalSec: 0.0 }
   , { place: "Zabrze", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.75, totalSec: 0.0 }
   , { place: "Żory", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.74, totalSec: 0.0 }
+  , { place: "Bielsko-Biała", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.73, totalSec: 0.0 }
   , { place: "Olszówka (Mszana Dolna)", peakH: 18, peakM: 7, halfMin: 58.0, maxObs: 0.71, totalSec: 0.0 }
   , { place: "Wrocław", peakH: 18, peakM: 7, halfMin: 59.0, maxObs: 0.79, totalSec: 0.0 }
   , { place: "Berlin", peakH: 18, peakM: 10, halfMin: 60.0, maxObs: 0.84, totalSec: 0.0 }
