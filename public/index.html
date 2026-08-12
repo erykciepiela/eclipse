@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solar Eclipse over Europe — 12 August 2026</title>
+  <style>
+    :root {
+      --sky-top: #0b1026;
+      --sky-bottom: #2b3a67;
+      --ink: #e8ecf8;
+      --dim: #9aa5c4;
+      --accent: #ffd27d;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(var(--sky-top), var(--sky-bottom));
+      color: var(--ink);
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+    body > div { max-width: 60rem; margin: 0 auto; padding: 1.5rem; }
+    h1 { font-weight: 300; letter-spacing: 0.04em; margin: 0.5rem 0 0.2rem; }
+    h4 { color: var(--dim); font-weight: 400; margin: 0.2rem 0 1rem; }
+    .readout { font-variant-numeric: tabular-nums; }
+    .phase { color: var(--accent); font-size: 1.3rem; letter-spacing: 0.06em; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th, td { text-align: left; padding: 0.35rem 0.8rem 0.35rem 0; font-variant-numeric: tabular-nums; }
+    th { color: var(--dim); font-weight: 500; border-bottom: 1px solid #3c4a76; }
+    td { border-bottom: 1px solid #232e52; }
+    progress { -webkit-appearance: none; appearance: none; width: 100%; min-width: 8rem; height: 0.5rem; border: none; border-radius: 4px; overflow: hidden; background: #232e52; }
+    progress::-webkit-progress-bar { background: #232e52; border-radius: 4px; }
+    progress::-webkit-progress-value { background: var(--accent); }
+    progress::-moz-progress-bar { background: var(--accent); }
+    .sky { width: 100%; max-width: 34rem; display: block; margin: 1rem auto 0.3rem; }
+    .sun { fill: #ffd27d; filter: drop-shadow(0 0 18px rgba(255, 210, 125, 0.8)); }
+    .moon { fill: #10162e; stroke: rgba(255, 255, 255, 0.18); }
+    .veil { fill: #000; }
+    .caption { color: var(--dim); font-size: 0.85rem; text-align: center; margin: 0.2rem 0 0.6rem; }
+    tbody tr { cursor: pointer; }
+    tbody tr:hover td { background: rgba(255, 255, 255, 0.05); }
+    tr.observing td:first-child { font-weight: 700; }
+    tr.viewing td { background: rgba(255, 210, 125, 0.12); }
+  </style>
+  <script>window.__bambikTrace = false</script>
+</head>
+<body>
+  <script type="module" src="bundle.js"></script>
+</body>
+</html>

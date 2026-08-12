@@ -1,0 +1,6 @@
+node_modules/
+output/
+.spago/
+.psci_modules/
+.psc-ide-port
+public/bundle.js
