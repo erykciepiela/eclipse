@@ -6,34 +6,151 @@
   <title>Solar Eclipse over Europe — 12 August 2026</title>
   <style>
     :root {
-      --sky-top: #0b1026;
-      --sky-bottom: #2b3a67;
+      --sky-top: #05081c;
+      --sky-bottom: #26325c;
       --ink: #e8ecf8;
       --dim: #9aa5c4;
       --accent: #ffd27d;
     }
+    html { background: var(--sky-top); }
     body {
       margin: 0;
       min-height: 100vh;
-      background: linear-gradient(var(--sky-top), var(--sky-bottom));
+      background:
+        radial-gradient(70rem 45rem at 85% -20%, rgba(126, 87, 194, 0.30), transparent 60%),
+        radial-gradient(55rem 40rem at -10% 115%, rgba(64, 140, 200, 0.24), transparent 60%),
+        radial-gradient(40rem 28rem at 55% 40%, rgba(255, 210, 125, 0.06), transparent 70%),
+        linear-gradient(var(--sky-top), var(--sky-bottom));
+      background-attachment: fixed;
       color: var(--ink);
       font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      overflow-x: hidden;
     }
-    body > div { max-width: 60rem; margin: 0 auto; padding: 1.5rem; }
-    h1 { font-weight: 300; letter-spacing: 0.04em; margin: 0.5rem 0 0.2rem; }
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      background-image:
+        radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(1px 1px at 120px 90px, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(1.5px 1.5px at 200px 40px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(1px 1px at 70px 160px, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(1px 1px at 180px 200px, rgba(255, 255, 255, 0.75), transparent),
+        radial-gradient(1.5px 1.5px at 40px 220px, rgba(200, 220, 255, 0.7), transparent);
+      background-size: 260px 260px;
+      animation: twinkle 6s ease-in-out infinite alternate, drift 400s linear infinite;
+    }
+    body::after {
+      background-image:
+        radial-gradient(2px 2px at 90px 50px, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(2.5px 2.5px at 300px 180px, rgba(255, 230, 190, 0.85), transparent),
+        radial-gradient(2px 2px at 210px 300px, rgba(200, 220, 255, 0.8), transparent),
+        radial-gradient(1.5px 1.5px at 360px 90px, rgba(255, 255, 255, 0.7), transparent);
+      background-size: 420px 420px;
+      animation: twinkle 9s ease-in-out -3s infinite alternate-reverse, drift 600s linear infinite reverse;
+    }
+    @keyframes twinkle { from { opacity: 0.4; } to { opacity: 1; } }
+    @keyframes drift { from { background-position: 0 0; } to { background-position: 0 1000px; } }
+    html::before {
+      content: "";
+      position: fixed;
+      top: 14%;
+      left: -12%;
+      width: 130px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9));
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+      animation: shoot 13s linear 5s infinite;
+    }
+    @keyframes shoot {
+      0% { transform: translate(0, 0) rotate(9deg); opacity: 0; }
+      1% { opacity: 0.9; }
+      7% { transform: translate(115vw, 16vh) rotate(9deg); opacity: 0; }
+      100% { transform: translate(115vw, 16vh) rotate(9deg); opacity: 0; }
+    }
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      background: var(--sky-top);
+      pointer-events: none;
+      animation: splash-out 0.6s ease 1.5s forwards;
+    }
+    @keyframes splash-out { to { opacity: 0; visibility: hidden; } }
+    .splash-disc { position: relative; width: 7rem; height: 7rem; }
+    .splash-sun {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 44px 14px rgba(255, 210, 125, 0.55);
+    }
+    .splash-moon {
+      position: absolute;
+      inset: -2%;
+      border-radius: 50%;
+      background: #0a1024;
+      transform: translateX(-135%);
+      animation: splash-pass 1.5s cubic-bezier(0.6, 0.05, 0.4, 0.95) forwards;
+    }
+    @keyframes splash-pass {
+      0% { transform: translateX(-135%); }
+      60%, 100% { transform: translateX(0); }
+    }
+    body > div:not(#splash) {
+      max-width: 60rem;
+      margin: 0 auto;
+      padding: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    body > div:not(#splash) > * { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+    body > div:not(#splash) > *:nth-child(1) { animation-delay: 1.25s; }
+    body > div:not(#splash) > *:nth-child(2) { animation-delay: 1.35s; }
+    body > div:not(#splash) > *:nth-child(3) { animation-delay: 1.45s; }
+    body > div:not(#splash) > *:nth-child(4) { animation-delay: 1.55s; }
+    body > div:not(#splash) > *:nth-child(5) { animation-delay: 1.65s; }
+    body > div:not(#splash) > *:nth-child(6) { animation-delay: 1.75s; }
+    body > div:not(#splash) > *:nth-child(7) { animation-delay: 1.85s; }
+    body > div:not(#splash) > *:nth-child(8) { animation-delay: 1.95s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+    body > div:not(#splash) > h1 { animation: title-in 1.1s ease 1.25s both; }
+    @keyframes title-in {
+      from { opacity: 0; letter-spacing: 0.3em; filter: blur(4px); }
+      to { opacity: 1; letter-spacing: 0.04em; filter: none; }
+    }
+    h1 {
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      margin: 0.5rem 0 0.2rem;
+      text-shadow: 0 0 24px rgba(255, 210, 125, 0.25);
+    }
     h4 { color: var(--dim); font-weight: 400; margin: 0.2rem 0 1rem; }
     .readout { font-variant-numeric: tabular-nums; }
-    .phase { color: var(--accent); font-size: 1.3rem; letter-spacing: 0.06em; }
+    .phase { color: var(--accent); font-size: 1.3rem; letter-spacing: 0.06em; text-shadow: 0 0 18px rgba(255, 210, 125, 0.35); }
     table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
     th, td { text-align: left; padding: 0.35rem 0.8rem 0.35rem 0; font-variant-numeric: tabular-nums; }
     th { color: var(--dim); font-weight: 500; border-bottom: 1px solid #3c4a76; }
-    td { border-bottom: 1px solid #232e52; }
+    td { border-bottom: 1px solid #232e52; transition: background 0.2s ease; }
     progress { -webkit-appearance: none; appearance: none; width: 100%; min-width: 8rem; height: 0.5rem; border: none; border-radius: 4px; overflow: hidden; background: #232e52; }
     progress::-webkit-progress-bar { background: #232e52; border-radius: 4px; }
     progress::-webkit-progress-value { background: var(--accent); }
     progress::-moz-progress-bar { background: var(--accent); }
     .sky { width: 100%; max-width: 34rem; display: block; margin: 1rem auto 0.3rem; }
-    .sun { fill: #ffd27d; filter: drop-shadow(0 0 18px rgba(255, 210, 125, 0.8)); }
+    .sun { fill: #ffd27d; animation: sun-breathe 7s ease-in-out infinite; }
+    @keyframes sun-breathe {
+      0%, 100% { filter: drop-shadow(0 0 14px rgba(255, 210, 125, 0.7)); }
+      50% { filter: drop-shadow(0 0 28px rgba(255, 210, 125, 0.95)); }
+    }
     .moon { fill: #10162e; stroke: rgba(255, 255, 255, 0.18); }
     .veil { fill: #000; }
     .caption { color: var(--dim); font-size: 0.85rem; text-align: center; margin: 0.2rem 0 0.6rem; }
@@ -41,10 +158,20 @@
     tbody tr:hover td { background: rgba(255, 255, 255, 0.05); }
     tr.observing td:first-child { font-weight: 700; }
     tr.viewing td { background: rgba(255, 210, 125, 0.12); }
+    @media (prefers-reduced-motion: reduce) {
+      #splash { display: none; }
+      *, ::before, ::after { animation-duration: 0.01ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }
+    }
   </style>
   <script>window.__bambikTrace = false</script>
 </head>
 <body>
+  <div id="splash" aria-hidden="true">
+    <div class="splash-disc">
+      <div class="splash-sun"></div>
+      <div class="splash-moon"></div>
+    </div>
+  </div>
   <script type="module" src="bundle.js"></script>
 </body>
 </html>
