@@ -14,7 +14,7 @@ module EclipseLogic
   , viewPlace
   ) where
 
-import Prelude ((+), (-), (*), (/), (<), (<=), (>=), (==), (&&), (<>), ($), bind, map, max, min, negate, otherwise, pure, show)
+import Prelude ((+), (-), (*), (/), (<), (<=), (>=), (==), (&&), (<>), bind, map, max, min, negate, otherwise, pure, show)
 
 import Data.Array (find)
 import Data.Int (floor, quot, rem, round, toNumber)
@@ -106,7 +106,7 @@ localClock { nowMs, tzMs } = clockOfDay (nowMs + tzMs)
 
 placeRows
   :: { nowMs :: Number, tzMs :: Number, place :: String }
-  -> Array { place :: String, span :: String, phase :: String, cover :: String, frac :: Number, observing :: Boolean, viewing :: Boolean }
+  -> Array { place :: String, span :: String, phase :: String, cover :: String, sunset :: String, frac :: Number, observing :: Boolean, viewing :: Boolean }
 placeRows { nowMs, tzMs, place } = map row eclipsePlaces
   where
   row c =
@@ -114,6 +114,7 @@ placeRows { nowMs, tzMs, place } = map row eclipsePlaces
         halfMs = c.halfMin * 60000.0
         c1 = maxAtMs - halfMs
         c4 = maxAtMs + halfMs
+        sunsetMs = atUTC c.sunsetH c.sunsetM
         frac = coverBell { nowMs, maxAtMs, halfMs, maxObs: c.maxObs }
         phase =
           if nowMs < c1 then "begins " <> hhmm (c1 + tzMs)
@@ -126,6 +127,7 @@ placeRows { nowMs, tzMs, place } = map row eclipsePlaces
       , span: hhmm (c1 + tzMs) <> "–" <> hhmm (c4 + tzMs) <> " (" <> hhmm c1 <> "–" <> hhmm c4 <> " UTC)"
       , phase
       , cover: show (round (frac * 100.0)) <> "/" <> show (round (c.maxObs * 100.0)) <> "%"
+      , sunset: hhmm (sunsetMs + tzMs) <> " (" <> hhmm sunsetMs <> " UTC)" <> (if sunsetMs < c4 then " · sets eclipsed" else "")
       , frac
       , observing: c.place == observingPlace
       , viewing: c.place == place
@@ -134,28 +136,28 @@ placeRows { nowMs, tzMs, place } = map row eclipsePlaces
 observingPlace :: String
 observingPlace = "Olszówka (Mszana Dolna)"
 
-eclipsePlaces :: Array { place :: String, peakH :: Int, peakM :: Int, halfMin :: Number, maxObs :: Number, totalSec :: Number }
+eclipsePlaces :: Array { place :: String, peakH :: Int, peakM :: Int, halfMin :: Number, maxObs :: Number, totalSec :: Number, sunsetH :: Int, sunsetM :: Int }
 eclipsePlaces =
-  [ { place: "Reykjavík", peakH: 17, peakM: 48, halfMin: 58.0, maxObs: 1.0, totalSec: 110.0 }
-  , { place: "Oslo", peakH: 17, peakM: 58, halfMin: 59.0, maxObs: 0.91, totalSec: 0.0 }
-  , { place: "Warsaw", peakH: 18, peakM: 3, halfMin: 58.0, maxObs: 0.75, totalSec: 0.0 }
-  , { place: "Bydgoszcz", peakH: 18, peakM: 4, halfMin: 59.0, maxObs: 0.81, totalSec: 0.0 }
-  , { place: "Inowrocław", peakH: 18, peakM: 4, halfMin: 59.0, maxObs: 0.8, totalSec: 0.0 }
-  , { place: "Płock", peakH: 18, peakM: 4, halfMin: 59.0, maxObs: 0.78, totalSec: 0.0 }
-  , { place: "Kraków", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.72, totalSec: 0.0 }
-  , { place: "Zabrze", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.75, totalSec: 0.0 }
-  , { place: "Żory", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.74, totalSec: 0.0 }
-  , { place: "Bielsko-Biała", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.73, totalSec: 0.0 }
-  , { place: "Olszówka (Mszana Dolna)", peakH: 18, peakM: 7, halfMin: 58.0, maxObs: 0.71, totalSec: 0.0 }
-  , { place: "Wrocław", peakH: 18, peakM: 7, halfMin: 59.0, maxObs: 0.79, totalSec: 0.0 }
-  , { place: "Berlin", peakH: 18, peakM: 10, halfMin: 60.0, maxObs: 0.84, totalSec: 0.0 }
-  , { place: "London", peakH: 18, peakM: 13, halfMin: 61.0, maxObs: 0.91, totalSec: 0.0 }
-  , { place: "Paris", peakH: 18, peakM: 17, halfMin: 61.0, maxObs: 0.92, totalSec: 0.0 }
-  , { place: "Rome", peakH: 18, peakM: 23, halfMin: 55.0, maxObs: 0.67, totalSec: 0.0 }
-  , { place: "Bilbao", peakH: 18, peakM: 27, halfMin: 60.0, maxObs: 1.0, totalSec: 100.0 }
-  , { place: "Zaragoza", peakH: 18, peakM: 29, halfMin: 59.0, maxObs: 1.0, totalSec: 85.0 }
-  , { place: "Palma de Mallorca", peakH: 18, peakM: 31, halfMin: 55.0, maxObs: 1.0, totalSec: 90.0 }
-  , { place: "Lisbon", peakH: 18, peakM: 32, halfMin: 55.0, maxObs: 0.93, totalSec: 0.0 }
+  [ { place: "Reykjavík", peakH: 17, peakM: 48, halfMin: 58.0, maxObs: 1.0, totalSec: 110.0, sunsetH: 21, sunsetM: 58 }
+  , { place: "Oslo", peakH: 17, peakM: 58, halfMin: 59.0, maxObs: 0.91, totalSec: 0.0, sunsetH: 19, sunsetM: 21 }
+  , { place: "Warsaw", peakH: 18, peakM: 3, halfMin: 58.0, maxObs: 0.75, totalSec: 0.0, sunsetH: 18, sunsetM: 9 }
+  , { place: "Bydgoszcz", peakH: 18, peakM: 4, halfMin: 59.0, maxObs: 0.81, totalSec: 0.0, sunsetH: 18, sunsetM: 24 }
+  , { place: "Inowrocław", peakH: 18, peakM: 4, halfMin: 59.0, maxObs: 0.8, totalSec: 0.0, sunsetH: 18, sunsetM: 21 }
+  , { place: "Płock", peakH: 18, peakM: 4, halfMin: 59.0, maxObs: 0.78, totalSec: 0.0, sunsetH: 18, sunsetM: 15 }
+  , { place: "Kraków", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.72, totalSec: 0.0, sunsetH: 18, sunsetM: 6 }
+  , { place: "Zabrze", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.75, totalSec: 0.0, sunsetH: 18, sunsetM: 12 }
+  , { place: "Żory", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.74, totalSec: 0.0, sunsetH: 18, sunsetM: 11 }
+  , { place: "Bielsko-Biała", peakH: 18, peakM: 6, halfMin: 58.0, maxObs: 0.73, totalSec: 0.0, sunsetH: 18, sunsetM: 9 }
+  , { place: "Olszówka (Mszana Dolna)", peakH: 18, peakM: 7, halfMin: 58.0, maxObs: 0.71, totalSec: 0.0, sunsetH: 18, sunsetM: 5 }
+  , { place: "Wrocław", peakH: 18, peakM: 7, halfMin: 59.0, maxObs: 0.79, totalSec: 0.0, sunsetH: 18, sunsetM: 21 }
+  , { place: "Berlin", peakH: 18, peakM: 10, halfMin: 60.0, maxObs: 0.84, totalSec: 0.0, sunsetH: 18, sunsetM: 40 }
+  , { place: "London", peakH: 18, peakM: 13, halfMin: 61.0, maxObs: 0.91, totalSec: 0.0, sunsetH: 19, sunsetM: 31 }
+  , { place: "Paris", peakH: 18, peakM: 17, halfMin: 61.0, maxObs: 0.92, totalSec: 0.0, sunsetH: 19, sunsetM: 13 }
+  , { place: "Rome", peakH: 18, peakM: 23, halfMin: 55.0, maxObs: 0.67, totalSec: 0.0, sunsetH: 18, sunsetM: 16 }
+  , { place: "Bilbao", peakH: 18, peakM: 27, halfMin: 60.0, maxObs: 1.0, totalSec: 100.0, sunsetH: 19, sunsetM: 21 }
+  , { place: "Zaragoza", peakH: 18, peakM: 29, halfMin: 59.0, maxObs: 1.0, totalSec: 85.0, sunsetH: 19, sunsetM: 9 }
+  , { place: "Palma de Mallorca", peakH: 18, peakM: 31, halfMin: 55.0, maxObs: 1.0, totalSec: 90.0, sunsetH: 18, sunsetM: 51 }
+  , { place: "Lisbon", peakH: 18, peakM: 32, halfMin: 55.0, maxObs: 0.93, totalSec: 0.0, sunsetH: 19, sunsetM: 36 }
   ]
 
 coverBell :: { nowMs :: Number, maxAtMs :: Number, halfMs :: Number, maxObs :: Number } -> Number

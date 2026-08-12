@@ -39,6 +39,7 @@ eclipse =
                 th (staticText "Partial phase")
                 th (staticText "State")
                 th (staticText "Cover (now/max)")
+                th (staticText "Sunset")
                 th (staticText "Obscuration")
               tbody
                 ( ( clicked ( ( tr $ RecordToRecord.do
@@ -46,6 +47,7 @@ eclipse =
                       td $ text # forField @"value" @"span" identity
                       td $ text # forField @"value" @"phase" identity
                       td $ text # forField @"value" @"cover" identity
+                      td $ text # forField @"value" @"sunset" identity
                       td $ progress # forField @"value" @"frac" identity ) # completed ) # clWhen _.observing "observing" # clWhen _.viewing "viewing" ) # foreach @"place" placeRows ) ) # toCase @"placePicked" _.place # updated (match { placePicked: const <<< viewPlace })
       ) # looped
   ) # with {}
